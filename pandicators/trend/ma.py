@@ -22,7 +22,7 @@ def simple_ma(dataframe: pd.DataFrame, column: str, window_size: int) -> pd.Seri
         raise ValueError("window_size must be greater than 0")
     if window_size > len(dataframe):
         raise ValueError("window_size must be less than or equal to the length of the dataframe")
-    if window_size is not int:
+    if not isinstance(window_size, int):
         raise TypeError("window_size must be an integer")
     if column not in dataframe.columns:
         raise ValueError(f"Column {column} could not be found in DataFrame")
