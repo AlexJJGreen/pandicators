@@ -53,3 +53,34 @@ def test_macd():
                            name="MACD_Signal")]
     for i,df in enumerate(expected):
         pd.testing.assert_series_equal(result[i],df)
+
+def test_macd_invalid_dfObj():
+    df = "Invalid_DF"
+    with pytest.raises(TypeError):
+        macd(df)
+
+def test_macd_short_ema_value_errors():
+    df = pd.DataFrame({"close": [0,1,2,3,4,5,6,7,8,9]})
+    invalid_short_vals = [-1,8]
+    test_long_ema = 7
+    for val in invalid_short_vals:
+        with pytest.raises(ValueError):
+            macd(df,short_ema=val)
+
+def test_macd_long_ema_value_errors():
+    df = pd.DataFrame({"close": [0,1,2,3,4,5,6,7,8,9]})
+    invalid_long_vals = [-1,7]
+    test_short_ema = 8
+    for val in invalid_long_vals:
+        with pytest.raises(ValueError):
+            macd(df,long_ema=val)
+
+def test_macd_short_ema_type_error():
+    df = pd.DataFrame({"close": [0,1,2,3,4,5,6,7,8,9]})
+    with pytest.raises(TypeError):
+        macd(df,short_ema="a")
+
+def test_macd_long_ema_type_error():
+    df = pd.DataFrame({"close": [0,1,2,3,4,5,6,7,8,9]})
+    with pytest.raises(TypeError):
+        macd(df,long_ema="a")

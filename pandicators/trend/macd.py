@@ -17,6 +17,12 @@ def macd(dataframe: pd.DataFrame, column: str = "close", short_ema: int = 12, lo
     # error handling
     if not isinstance(dataframe, pd.DataFrame):
         raise TypeError(f"dataframe '{dataframe}' is not a valid instance of pandas.DataFrame")
+    if not isinstance(short_ema, int):
+        raise TypeError("short_ema must be an instance if int")
+    if not isinstance(long_ema, int):
+        raise TypeError("long_ema must be an instance of type int")
+    if not isinstance(concat, bool):
+        raise TypeError("concat must be a True or False boolean value")
     if column not in dataframe.columns:
         raise ValueError(f"Column '{column}' could not be found in {dataframe}")
     if short_ema < 0:
@@ -33,8 +39,6 @@ def macd(dataframe: pd.DataFrame, column: str = "close", short_ema: int = 12, lo
         raise ValueError(f"signal must be less than the length of {dataframe}")
     if short_ema > long_ema:
         raise ValueError(f"short_ema must be less than long_ema")
-    if not isinstance(concat, bool):
-        raise TypeError("concat must be a True or False boolean value")
     
     sema = dataframe[column].ewm(span=short_ema, adjust=False).mean()
     lema = dataframe[column].ewm(span=long_ema,adjust=False).mean()
